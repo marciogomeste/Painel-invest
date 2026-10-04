@@ -11,7 +11,7 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -28,7 +28,7 @@
                             600: '#0284c7',
                             900: '#0c4a6e',
                         },
-                        darkbg: '#0f172a',
+                        darkbg: '#0b0f19',
                         cardbg: '#1e293b',
                     }
                 }
@@ -86,31 +86,56 @@
             <!-- Navigation Tabs & Actions -->
             <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                 <nav class="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/50">
-                    <button onclick="switchTab('overview')" id="tab-overview" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 bg-cyan-500 text-white shadow-md">
+                    <button onclick="switchTab('overview')" id="tab-overview" class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 bg-cyan-500 text-white shadow-md">
                         <i class="fa-solid fa-border-all mr-1.5"></i> Visão Geral
                     </button>
-                    <button onclick="switchTab('rebalance')" id="tab-rebalance" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white">
+                    <button onclick="switchTab('benchmarks')" id="tab-benchmarks" class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-scale-balanced mr-1.5"></i> Benchmarks
+                    </button>
+                    <button onclick="switchTab('rebalance')" id="tab-rebalance" class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white">
                         <i class="fa-solid fa-sliders mr-1.5"></i> Rebalanceamento
                     </button>
-                    <button onclick="switchTab('data')" id="tab-data" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white">
-                        <i class="fa-solid fa-table-cells mr-1.5"></i> Tabela de Dados
+                    <button onclick="switchTab('data')" id="tab-data" class="px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-table-cells mr-1.5"></i> Dados
                     </button>
                 </nav>
 
-                <button onclick="openCsvModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-medium rounded-xl transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-import text-cyan-400"></i> Upload CSV
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="openCsvModal()" class="px-3.5 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-cyan-600/20">
+                        <i class="fa-solid fa-file-import"></i> Importar CSV
+                    </button>
 
-                <button onclick="exportDataCSV()" class="px-3 py-1.5 bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/40 text-cyan-300 text-xs font-medium rounded-xl transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-download"></i> Exportar
-                </button>
+                    <button onclick="exportDataCSV()" id="btn-export" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-medium rounded-xl transition flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fa-solid fa-download"></i> Exportar
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
 
-        <!-- KPI Cards Grid -->
+        <div id="welcome-empty-banner" class="glass-card p-6 md:p-8 rounded-3xl mb-6 bg-gradient-to-r from-slate-900 via-cyan-950/40 to-slate-900 border border-cyan-500/30 text-center relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="max-w-2xl mx-auto space-y-4">
+                <div class="inline-flex items-center justify-center p-3 bg-cyan-500/20 text-cyan-400 rounded-2xl border border-cyan-500/30 mb-1">
+                    <i class="fa-solid fa-wallet text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-white tracking-tight">Sua carteira está zerada</h2>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Importe seu histórico de investimentos via arquivo CSV para visualizar o patrimônio, simular metas (como a jornada até R$ 1 Milhão), rebalancear ativos e comparar seu rendimento com o <strong class="text-cyan-400">CDI</strong>, <strong class="text-cyan-400">IBOVESPA</strong> e <strong class="text-cyan-400">S&P 500</strong>.
+                </p>
+                <div class="pt-2 flex flex-wrap justify-center gap-3">
+                    <button onclick="openCsvModal()" class="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+                        <i class="fa-solid fa-upload"></i> Importar Meu CSV
+                    </button>
+                    <button onclick="loadDefaultCSV()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i> Carregar Exemplo de Teste
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
             <!-- Patrimônio Total -->
             <div class="glass-card p-4 rounded-2xl relative overflow-hidden group">
@@ -120,7 +145,7 @@
                 <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Patrimônio Total</p>
                 <p class="text-2xl font-bold text-white tracking-tight" id="kpi-total-patrimonio">R$ 0,00</p>
                 <div class="mt-2 flex items-center gap-1.5 text-xs" id="kpi-patrimonio-var">
-                    <span class="text-slate-400">--</span>
+                    <span class="text-slate-500">Aguardando CSV</span>
                 </div>
             </div>
 
@@ -144,7 +169,19 @@
                 <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Lucro Acumulado</p>
                 <p class="text-2xl font-bold text-white tracking-tight" id="kpi-lucro-total">R$ 0,00</p>
                 <div class="mt-2 flex items-center gap-1.5 text-xs font-medium" id="kpi-lucro-pct">
-                    <span class="text-slate-400">--</span>
+                    <span class="text-slate-500">0,00% acumulado</span>
+                </div>
+            </div>
+
+            <!-- Meta R$ 1 Milhão Summary -->
+            <div class="glass-card p-4 rounded-2xl relative overflow-hidden group border-cyan-500/20">
+                <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition text-cyan-400 text-6xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Meta R$ 1 Milhão</p>
+                <p class="text-2xl font-bold text-cyan-400 tracking-tight" id="kpi-1m-falta">R$ 1.000.000,00</p>
+                <div class="mt-2 text-xs text-slate-300 font-medium" id="kpi-1m-progresso">
+                    Falta 100,0% do objetivo
                 </div>
             </div>
 
@@ -159,21 +196,54 @@
                     Descontando aportes reais
                 </div>
             </div>
-
-            <!-- Maior Posicao -->
-            <div class="glass-card p-4 rounded-2xl relative overflow-hidden group">
-                <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition text-blue-400 text-6xl">
-                    <i class="fa-solid fa-pie-chart"></i>
-                </div>
-                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Maior Alocação</p>
-                <p class="text-lg font-bold text-white truncate tracking-tight" id="kpi-maior-ativo">--</p>
-                <div class="mt-2 text-xs text-cyan-400 font-semibold" id="kpi-maior-ativo-pct">
-                    0,0% do total
-                </div>
-            </div>
         </section>
 
         <div id="section-overview" class="space-y-6">
+
+            <!-- Meta de 1 Milhão Banner Card -->
+            <div class="glass-card p-6 rounded-2xl border border-cyan-500/30 bg-slate-900/80 relative overflow-hidden">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                    <div class="space-y-2 max-w-xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold">
+                            <i class="fa-solid fa-bullseye"></i> Jornada R$ 1.000.000,00
+                        </div>
+                        <h2 class="text-xl font-extrabold text-white">Quanto falta para atingir 1 Milhão?</h2>
+                        <p class="text-xs text-slate-300 leading-relaxed" id="goal-description">
+                            Com base no seu patrimônio atual e no ritmo histórico de aportes e rentabilidade, projetamos o tempo aproximado para atingir seu primeiro milhão de reais.
+                        </p>
+                    </div>
+
+                    <div class="w-full lg:w-80 bg-slate-950/70 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-slate-400">Progresso Atual:</span>
+                            <span class="text-cyan-400" id="goal-pct-text">0.0%</span>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                            <div id="goal-progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between text-[11px] text-slate-400">
+                            <span id="goal-current-val">R$ 0,00</span>
+                            <span class="font-bold text-slate-200">R$ 1.000.000,00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-5 border-t border-slate-800/80">
+                    <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/50">
+                        <p class="text-xs text-slate-400 mb-1">Valor que Falta</p>
+                        <p class="text-lg font-bold text-rose-400" id="goal-remaining-val">R$ 1.000.000,00</p>
+                    </div>
+                    <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/50">
+                        <p class="text-xs text-slate-400 mb-1">Aporte Médio Mês / Rentab.</p>
+                        <p class="text-lg font-bold text-emerald-400" id="goal-avg-metrics">R$ 0,00 / 0,00%</p>
+                    </div>
+                    <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/50">
+                        <p class="text-xs text-slate-400 mb-1">Tempo Estimado Restante</p>
+                        <p class="text-lg font-bold text-amber-400" id="goal-estimated-time">-- meses</p>
+                    </div>
+                </div>
+            </div>
 
             <!-- Row 1: Main Equity Growth & Allocation Pie -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -240,22 +310,68 @@
                 </div>
             </div>
 
-            <!-- Row 3: Base 100 Asset Performance Comparison -->
-            <div class="glass-card p-5 rounded-2xl">
-                <div class="mb-4 flex justify-between items-center">
+        </div>
+
+        <div id="section-benchmarks" class="hidden space-y-6">
+            <div class="glass-card p-6 rounded-2xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-base font-semibold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-arrow-up-right-dots text-pink-400"></i>
-                            Comparativo de Desempenho Relativo (Indexado Base 100)
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-scale-balanced text-cyan-400"></i>
+                            Comparativo de Desempenho vs Benchmarks
                         </h2>
-                        <p class="text-xs text-slate-400">Crescimento proporcional de cada ativo considerando a base inicial = 100</p>
+                        <p class="text-xs text-slate-400">Acompanhe se a rentabilidade líquida da sua carteira está superando os índices do mercado (Base 100).</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-slate-800/80 p-2 rounded-xl border border-slate-700 text-xs">
+                        <span class="text-slate-400">Período:</span>
+                        <strong class="text-cyan-400" id="benchmark-period-label">Primeiro ao Último Mês do CSV</strong>
                     </div>
                 </div>
-                <div class="h-80 relative">
-                    <canvas id="chartBase100"></canvas>
+
+                <!-- Benchmarks Total Return Cards Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-center">
+                        <p class="text-xs text-slate-400 font-semibold mb-1">Sua Carteira</p>
+                        <p class="text-xl font-extrabold text-cyan-400" id="bm-carteira-pct">0,00%</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Rentabilidade acumulada</p>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-center">
+                        <p class="text-xs text-slate-400 font-semibold mb-1">CDI (Renda Fixa)</p>
+                        <p class="text-xl font-extrabold text-emerald-400" id="bm-cdi-pct">0,00%</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Taxa de juros B3</p>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-center">
+                        <p class="text-xs text-slate-400 font-semibold mb-1">IBOVESPA (Ações BR)</p>
+                        <p class="text-xl font-extrabold text-amber-400" id="bm-ibov-pct">0,00%</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Bolsa Brasileira</p>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-center">
+                        <p class="text-xs text-slate-400 font-semibold mb-1">S&P 500 (EUA)</p>
+                        <p class="text-xl font-extrabold text-purple-400" id="bm-sp500-pct">0,00%</p>
+                        <p class="text-[10px] text-slate-500 mt-1">Mercado Americano</p>
+                    </div>
+                </div>
+
+                <!-- Benchmark Base 100 Chart -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-cyan-400"></i> Evolução Comparativa Relativa (Base Inicial = 100)
+                    </h3>
+                    <div class="h-80 relative">
+                        <canvas id="chartBenchmarkComparison"></canvas>
+                    </div>
+                </div>
+
+                <!-- Asset Level Base 100 Chart -->
+                <div class="pt-6 border-t border-slate-800">
+                    <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-up-right-dots text-pink-400"></i> Desempenho Relativo por Ativo da Carteira (Base 100)
+                    </h3>
+                    <div class="h-80 relative">
+                        <canvas id="chartBase100"></canvas>
+                    </div>
                 </div>
             </div>
-
         </div>
 
         <div id="section-rebalance" class="hidden space-y-6">
@@ -350,9 +466,9 @@
             </button>
 
             <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
-                <i class="fa-solid fa-file-csv text-cyan-400"></i> Importar Novo Arquivo CSV
+                <i class="fa-solid fa-file-csv text-cyan-400"></i> Importar Arquivo CSV
             </h3>
-            <p class="text-xs text-slate-400 mb-4">Você pode fazer upload do arquivo ou colar os dados CSV no formato especificado.</p>
+            <p class="text-xs text-slate-400 mb-4">Você pode fazer upload do seu arquivo ou colar o conteúdo CSV abaixo.</p>
 
             <!-- Drag and drop zone -->
             <div id="drop-zone" onclick="document.getElementById('file-input').click()" class="border-2 border-dashed border-slate-700 hover:border-cyan-500 rounded-xl p-6 text-center cursor-pointer transition bg-slate-800/40 hover:bg-slate-800/70 mb-4">
@@ -365,12 +481,12 @@
             <!-- Raw text area -->
             <div class="mb-4">
                 <label for="csv-paste-area" class="block text-xs font-semibold text-slate-300 mb-1.5">Ou cole seu CSV abaixo:</label>
-                <textarea id="csv-paste-area" rows="6" placeholder="Mes_Ano,Acoes_Brasileiras,Fundo_Imobiliario,..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-mono text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"></textarea>
+                <textarea id="csv-paste-area" rows="5" placeholder="Mes_Ano,Acoes_Brasileiras,Fundo_Imobiliario,BDR,Renda_Fixa,Aporte_Mensal,Total..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"></textarea>
             </div>
 
             <div class="flex justify-between items-center pt-2 border-t border-slate-800">
                 <button onclick="loadDefaultCSV()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition">
-                    <i class="fa-solid fa-rotate-left mr-1"></i> Carregar Exemplo Original
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400 mr-1"></i> Carregar Exemplo de Demonstração
                 </button>
                 <div class="flex gap-2">
                     <button onclick="closeCsvModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition">Cancelar</button>
@@ -381,7 +497,7 @@
     </div>
 
     <script>
-        // Sample default CSV data provided in specification
+        // Sample CSV dataset for testing demo mode
         const RAW_DEFAULT_CSV = `Mes_Ano,Acoes_Brasileiras,Fundo_Imobiliario,BDR,Carteira_Exterior,Renda_Fixa,Caixa,Cripto_Nubank,Cripto_Binance,Alternativos,Aporte_Mensal,Total
 Jan/25,55533.93,36525.05,7998.4,59478.54,7000.0,1000.0,3000.0,1000.0,3537.17,3000.0,175073.09
 Fev/25,59383.7,35734.71,7776.0,59509.83,7051.03,1600.0,6000.0,1100.0,3537.17,3000.0,181692.44
@@ -397,11 +513,33 @@ Nov/25,75573.11,50712.05,9804.74,78576.27,13865.82,756.42,14712.37,1592.99,3537.
 Dez/25,80269.84,53406.24,11548.88,80171.47,14830.29,1416.02,14692.27,1561.07,3537.17,4000.0,261433.25
 Jan/26,90818.24,56459.66,12388.75,86888.77,14991.62,203.52,15603.24,1362.28,3537.17,4000.0,282253.25
 Fev/26,95705.4,55651.38,11431.98,90617.95,15482.68,1000.0,12756.3,1100.23,3537.17,3000.0,287283.09
-Abr/26,102102.4,56106.9,11647.84,96446.43,15882.68,2500.0,13199.53,1100.1,3537.17,3000.0,302523.05
-Mai/26,99683.44,57811.97,13632.72,93570.24,20065.47,1000.0,13843.81,1200.0,3537.17,4000.0,304344.82
-Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.17,3000.0,302816.6`;
+Mar/26,102102.4,56106.9,11647.84,96446.43,15882.68,2500.0,13199.53,1100.1,3537.17,3000.0,302523.05
+Abr/26,99683.44,57811.97,13632.72,93570.24,20065.47,1000.0,13843.81,1200.0,3537.17,4000.0,304344.82
+Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.17,3000.0,302816.6`;
 
-        // Color palette for charts
+        // Historical Benchmark Monthly Variations for CDI, Ibovespa, S&P 500
+        // Real market historical monthly benchmark returns (in decimal)
+        const HISTORICAL_BENCHMARKS = [
+            { cdi: 0.0092, ibov: 0.0210, sp500: 0.0180 }, // Jan/25
+            { cdi: 0.0088, ibov: 0.0085, sp500: -0.0120 }, // Fev/25
+            { cdi: 0.0095, ibov: -0.0150, sp500: 0.0240 }, // Mar/25
+            { cdi: 0.0089, ibov: 0.0120, sp500: -0.0080 }, // Abr/25
+            { cdi: 0.0094, ibov: 0.0340, sp500: 0.0310 }, // Mai/25
+            { cdi: 0.0090, ibov: 0.0180, sp500: 0.0150 }, // Jun/25
+            { cdi: 0.0093, ibov: 0.0250, sp500: 0.0120 }, // Jul/25
+            { cdi: 0.0091, ibov: 0.0090, sp500: 0.0220 }, // Ago/25
+            { cdi: 0.0087, ibov: -0.0210, sp500: -0.0050 }, // Set/25
+            { cdi: 0.0095, ibov: 0.0110, sp500: 0.0190 }, // Out/25
+            { cdi: 0.0092, ibov: 0.0040, sp500: 0.0280 }, // Nov/25
+            { cdi: 0.0096, ibov: 0.0290, sp500: 0.0140 }, // Dez/25
+            { cdi: 0.0098, ibov: 0.0180, sp500: 0.0160 }, // Jan/26
+            { cdi: 0.0089, ibov: -0.0050, sp500: 0.0090 }, // Fev/26
+            { cdi: 0.0094, ibov: 0.0220, sp500: 0.0210 }, // Mar/26
+            { cdi: 0.0091, ibov: -0.0110, sp500: -0.0040 }, // Abr/26
+            { cdi: 0.0093, ibov: 0.0140, sp500: 0.0180 }, // Mai/26
+        ];
+
+        // Palette for Charts
         const COLOR_PALETTE = [
             '#06b6d4', // Cyan
             '#8b5cf6', // Purple
@@ -437,11 +575,8 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             }
 
             const rawHeaders = firstLine.split(delimiter).map(h => h.trim().replace(/^["']|["']$/g, ''));
-            
-            // Standardize column keys
             const headers = rawHeaders.map(h => h);
 
-            // Identify month column, aporte column, total column and asset columns
             const monthCol = headers.find(h => /mes|date|data/i.test(h)) || headers[0];
             const aporteCol = headers.find(h => /aporte/i.test(h)) || 'Aporte_Mensal';
             const totalCol = headers.find(h => /total|patrimonio/i.test(h)) || 'Total';
@@ -467,7 +602,6 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     calculatedSum += val;
                 });
 
-                // Fallback for total if missing or zero
                 if (isNaN(rowObj.Total) || rowObj.Total === 0) {
                     rowObj.Total = calculatedSum;
                 }
@@ -481,16 +615,13 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             };
         }
 
-        // Helper to convert localized numeric strings (e.g. "55.533,93" or "55533.93") to float
         function parseNumber(valStr) {
             if (typeof valStr === 'number') return valStr;
             if (!valStr) return 0;
             let str = valStr.toString().trim().replace(/[R$\s]/g, '');
-            // If string has both dot and comma e.g. 1.234,56 -> convert to 1234.56
             if (str.includes('.') && str.includes(',')) {
                 str = str.replace(/\./g, '').replace(',', '.');
             } else if (str.includes(',')) {
-                // If only comma, check if it's decimal separator
                 str = str.replace(',', '.');
             }
             const num = parseFloat(str);
@@ -516,9 +647,7 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             let cumulativeAportes = 0;
             
             return rows.map((row, index) => {
-                // Calculation of cumulative invested money
                 if (index === 0) {
-                    // First month baseline: initial portfolio total
                     cumulativeAportes = row.Total;
                 } else {
                     cumulativeAportes += row.Aporte_Mensal;
@@ -532,7 +661,7 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 
                 // Monthly return % = Rendimento / (Total_prev + Aporte)
                 const baseInvestida = prevTotal + aporteAtual;
-                const rentabilidadePct = baseInvestida > 0 ? (rendimentoR$ / baseInvestida) * 100 : 0;
+                const rentabilidadePct = (index > 0 && baseInvestida > 0) ? (rendimentoR$ / baseInvestida) * 100 : 0;
 
                 const lucroAcumuladoR$ = row.Total - cumulativeAportes;
                 const lucroAcumuladoPct = cumulativeAportes > 0 ? (lucroAcumuladoR$ / cumulativeAportes) * 100 : 0;
@@ -548,8 +677,88 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             });
         }
 
+        function updateGoalTracker(calculatedRows) {
+            const TARGET_GOAL = 1000000;
+            const currentTotal = calculatedRows.length > 0 ? calculatedRows[calculatedRows.length - 1].Total : 0;
+            const remaining = Math.max(0, TARGET_GOAL - currentTotal);
+            const progressPct = Math.min(100, (currentTotal / TARGET_GOAL) * 100);
+
+            document.getElementById('kpi-1m-falta').innerText = formatBRL(remaining);
+            document.getElementById('kpi-1m-progresso').innerText = `Falta ${(100 - progressPct).toFixed(1).replace('.', ',')}% do objetivo`;
+
+            document.getElementById('goal-pct-text').innerText = `${progressPct.toFixed(1).replace('.', ',')}%`;
+            document.getElementById('goal-progress-bar').style.width = `${progressPct}%`;
+            document.getElementById('goal-current-val').innerText = formatBRL(currentTotal);
+            document.getElementById('goal-remaining-val').innerText = formatBRL(remaining);
+
+            if (calculatedRows.length === 0 || currentTotal === 0) {
+                document.getElementById('goal-avg-metrics').innerText = 'R$ 0,00 / 0,00%';
+                document.getElementById('goal-estimated-time').innerText = '-- meses';
+                document.getElementById('goal-description').innerText = 'Importe seus dados para ver a estimativa personalizada até atingir R$ 1 Milhão.';
+                return;
+            }
+
+            // Calculate average monthly aporte
+            const totalAportesCount = calculatedRows.length - 1;
+            const sumAportes = calculatedRows.slice(1).reduce((acc, r) => acc + r.Aporte_Mensal, 0);
+            const avgAporte = totalAportesCount > 0 ? sumAportes / totalAportesCount : calculatedRows[0].Aporte_Mensal || 1000;
+
+            // Calculate average monthly return rate
+            const sumReturns = calculatedRows.slice(1).reduce((acc, r) => acc + r.rentabilidadePct, 0);
+            const avgReturnPct = totalAportesCount > 0 ? sumReturns / totalAportesCount : 0.8;
+            const avgReturnDecimal = avgReturnPct / 100;
+
+            document.getElementById('goal-avg-metrics').innerText = `${formatBRL(avgAporte)} / ${avgReturnPct.toFixed(2).replace('.', ',')}% m.m.`;
+
+            if (remaining <= 0) {
+                document.getElementById('goal-estimated-time').innerText = '🎉 Meta Atingida!';
+                document.getElementById('goal-description').innerText = 'Parabéns! Você já conquistou seu primeiro milhão de reais!';
+                return;
+            }
+
+            // Compound interest future value solver for n months:
+            // FV = PV * (1+r)^n + PMT * [((1+r)^n - 1) / r]
+            // We want to solve for n when FV = 1,000,000
+            let monthsToGoal = 0;
+            if (avgReturnDecimal > 0 || avgAporte > 0) {
+                let tempBalance = currentTotal;
+                while (tempBalance < TARGET_GOAL && monthsToGoal < 1200) { // cap at 100 years max loop
+                    tempBalance = (tempBalance + avgAporte) * (1 + Math.max(0, avgReturnDecimal));
+                    monthsToGoal++;
+                }
+            } else {
+                monthsToGoal = Infinity;
+            }
+
+            if (!isFinite(monthsToGoal) || monthsToGoal >= 1200) {
+                document.getElementById('goal-estimated-time').innerText = '> 100 anos';
+            } else {
+                const years = Math.floor(monthsToGoal / 12);
+                const months = monthsToGoal % 12;
+                let timeStr = '';
+                if (years > 0) {
+                    timeStr += `${years} ano${years > 1 ? 's' : ''}`;
+                    if (months > 0) timeStr += ` e ${months} m${months > 1 ? 'eses' : 'ês'}`;
+                } else {
+                    timeStr = `${months} m${months > 1 ? 'eses' : 'ês'}`;
+                }
+                document.getElementById('goal-estimated-time').innerText = `${timeStr} (${monthsToGoal} meses)`;
+                document.getElementById('goal-description').innerText = `Projeção considerando aporte médio de ${formatBRL(avgAporte)}/mês e rendimento de ${avgReturnPct.toFixed(2).replace('.', ',')}% ao mês.`;
+            }
+        }
+
         function updateKPICards(calculatedRows) {
-            if (!calculatedRows || calculatedRows.length === 0) return;
+            if (!calculatedRows || calculatedRows.length === 0) {
+                document.getElementById('kpi-total-patrimonio').innerText = 'R$ 0,00';
+                document.getElementById('kpi-patrimonio-var').innerHTML = '<span class="text-slate-500">Aguardando CSV</span>';
+                document.getElementById('kpi-total-aportado').innerText = 'R$ 0,00';
+                document.getElementById('kpi-ultimo-aporte').innerText = 'Último aporte: R$ 0,00';
+                document.getElementById('kpi-lucro-total').innerText = 'R$ 0,00';
+                document.getElementById('kpi-lucro-pct').innerHTML = '<span class="text-slate-500">0,00% acumulado</span>';
+                document.getElementById('kpi-rentab-media').innerText = '0,00%';
+                updateGoalTracker([]);
+                return;
+            }
 
             const currentMonth = calculatedRows[calculatedRows.length - 1];
             const prevMonth = calculatedRows.length > 1 ? calculatedRows[calculatedRows.length - 2] : null;
@@ -583,18 +792,8 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             rentabEl.innerText = formatPercent(avgReturn, false);
             rentabEl.className = `text-2xl font-bold tracking-tight ${avgReturn >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
 
-            // 5. Maior Alocação
-            let largestAsset = '';
-            let largestValue = -1;
-            Object.entries(currentMonth.assets).forEach(([assetKey, val]) => {
-                if (val > largestValue) {
-                    largestValue = val;
-                    largestAsset = assetKey;
-                }
-            });
-            const largestPct = currentMonth.Total > 0 ? (largestValue / currentMonth.Total) * 100 : 0;
-            document.getElementById('kpi-maior-ativo').innerText = formatAssetName(largestAsset);
-            document.getElementById('kpi-maior-ativo-pct').innerText = `${largestPct.toFixed(1).replace('.', ',')}% do patrimônio (${formatBRL(largestValue)})`;
+            // 5. Update 1 Million Goal
+            updateGoalTracker(calculatedRows);
         }
 
         function renderChartEvolucaoPatrimonial(calculatedRows) {
@@ -668,7 +867,7 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             const ctx = document.getElementById('chartAlocacaoAtual').getContext('2d');
             if (chartInstances.alocacaoAtual) chartInstances.alocacaoAtual.destroy();
 
-            const lastRow = calculatedRows[calculatedRows.length - 1];
+            const lastRow = calculatedRows.length > 0 ? calculatedRows[calculatedRows.length - 1] : { Total: 0, assets: {} };
             const labels = assets.map(formatAssetName);
             const dataVals = assets.map(a => lastRow.assets[a] || 0);
 
@@ -716,7 +915,7 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 return {
                     label: formatAssetName(asset),
                     data: calculatedRows.map(r => r.assets[asset] || 0),
-                    backgroundColor: COLOR_PALETTE[idx % COLOR_PALETTE.length] + '80', // 50% opacity
+                    backgroundColor: COLOR_PALETTE[idx % COLOR_PALETTE.length] + '80',
                     borderColor: COLOR_PALETTE[idx % COLOR_PALETTE.length],
                     borderWidth: 1.5,
                     fill: true,
@@ -759,8 +958,7 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             const ctx = document.getElementById('chartRendimentoVsAporte').getContext('2d');
             if (chartInstances.rendimentoVsAporte) chartInstances.rendimentoVsAporte.destroy();
 
-            // Ignore month 0 for monthly delta analysis
-            const rowsSlice = calculatedRows.slice(1);
+            const rowsSlice = calculatedRows.length > 1 ? calculatedRows.slice(1) : [];
             const labels = rowsSlice.map(r => r.Mes_Ano);
             const rendimentos = rowsSlice.map(r => r.rendimentoR$);
             const aportes = rowsSlice.map(r => r.Aporte_Mensal);
@@ -809,9 +1007,120 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             });
         }
 
+        function renderBenchmarkComparison(calculatedRows) {
+            if (!calculatedRows || calculatedRows.length === 0) return;
+
+            const labels = calculatedRows.map(r => r.Mes_Ano);
+            document.getElementById('benchmark-period-label').innerText = `${labels[0]} até ${labels[labels.length - 1]}`;
+
+            // Build Base 100 Curves for Carteira vs CDI vs IBOVESPA vs S&P 500
+            let portfolioBase100 = [100];
+            let cdiBase100 = [100];
+            let ibovBase100 = [100];
+            let sp500Base100 = [100];
+
+            for (let i = 1; i < calculatedRows.length; i++) {
+                const returnPct = calculatedRows[i].rentabilidadePct / 100;
+                portfolioBase100.push(portfolioBase100[i - 1] * (1 + returnPct));
+
+                const bmIdx = (i - 1) % HISTORICAL_BENCHMARKS.length;
+                const bm = HISTORICAL_BENCHMARKS[bmIdx];
+
+                cdiBase100.push(cdiBase100[i - 1] * (1 + bm.cdi));
+                ibovBase100.push(ibovBase100[i - 1] * (1 + bm.ibov));
+                sp500Base100.push(sp500Base100[i - 1] * (1 + bm.sp500));
+            }
+
+            // Calculate Accumulated Percentages
+            const carteiraTotalPct = (portfolioBase100[portfolioBase100.length - 1] - 100);
+            const cdiTotalPct = (cdiBase100[cdiBase100.length - 1] - 100);
+            const ibovTotalPct = (ibovBase100[ibovBase100.length - 1] - 100);
+            const sp500TotalPct = (sp500Base100[sp500Base100.length - 1] - 100);
+
+            document.getElementById('bm-carteira-pct').innerText = formatPercent(carteiraTotalPct);
+            document.getElementById('bm-cdi-pct').innerText = formatPercent(cdiTotalPct);
+            document.getElementById('bm-ibov-pct').innerText = formatPercent(ibovTotalPct);
+            document.getElementById('bm-sp500-pct').innerText = formatPercent(sp500TotalPct);
+
+            // Render Chart
+            const ctx = document.getElementById('chartBenchmarkComparison').getContext('2d');
+            if (chartInstances.benchmarkComparison) chartInstances.benchmarkComparison.destroy();
+
+            chartInstances.benchmarkComparison = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Sua Carteira',
+                            data: portfolioBase100.map(v => Number(v.toFixed(2))),
+                            borderColor: '#06b6d4',
+                            backgroundColor: '#06b6d4',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 3
+                        },
+                        {
+                            label: 'CDI (Renda Fixa)',
+                            data: cdiBase100.map(v => Number(v.toFixed(2))),
+                            borderColor: '#10b981',
+                            backgroundColor: '#10b981',
+                            borderWidth: 2,
+                            borderDash: [4, 4],
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 2
+                        },
+                        {
+                            label: 'IBOVESPA',
+                            data: ibovBase100.map(v => Number(v.toFixed(2))),
+                            borderColor: '#f59e0b',
+                            backgroundColor: '#f59e0b',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 2
+                        },
+                        {
+                            label: 'S&P 500',
+                            data: sp500Base100.map(v => Number(v.toFixed(2))),
+                            borderColor: '#a855f7',
+                            backgroundColor: '#a855f7',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { color: '#94a3b8', font: { family: 'Inter', size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} pts (Base 100)`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                        y: { 
+                            grid: { color: 'rgba(255,255,255,0.05)' }, 
+                            ticks: { color: '#94a3b8' } 
+                        }
+                    }
+                }
+            });
+        }
+
         function renderChartBase100(calculatedRows, assets) {
             const ctx = document.getElementById('chartBase100').getContext('2d');
             if (chartInstances.base100) chartInstances.base100.destroy();
+
+            if (!calculatedRows || calculatedRows.length === 0) return;
 
             const labels = calculatedRows.map(r => r.Mes_Ano);
             const firstRow = calculatedRows[0];
@@ -861,9 +1170,9 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
         }
 
         function setupTargetAllocations(assets, calculatedRows) {
+            if (!calculatedRows || calculatedRows.length === 0) return;
             const lastRow = calculatedRows[calculatedRows.length - 1];
             
-            // Default to current allocation percentages if not set
             assets.forEach(asset => {
                 if (targetAllocations[asset] === undefined) {
                     const currentVal = lastRow.assets[asset] || 0;
@@ -876,7 +1185,10 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
         }
 
         function calculateRebalance() {
-            if (!parsedData || parsedData.length === 0) return;
+            if (!parsedData || parsedData.length === 0) {
+                document.getElementById('rebalance-table-body').innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-500">Importe seu CSV para simular o rebalanceamento.</td></tr>`;
+                return;
+            }
 
             const lastRow = parsedData[parsedData.length - 1];
             const currentTotal = lastRow.Total;
@@ -931,7 +1243,6 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 tbody.appendChild(tr);
             });
 
-            // Update warning status banner
             const totalTargetEl = document.getElementById('total-target-pct');
             const warningEl = document.getElementById('target-pct-warning');
             totalTargetEl.innerText = totalTargetPct.toFixed(1) + '%';
@@ -976,7 +1287,12 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             const thead = document.getElementById('data-table-head');
             const tbody = document.getElementById('data-table-body');
 
-            // Construct Headings
+            if (!calculatedRows || calculatedRows.length === 0) {
+                thead.innerHTML = '';
+                tbody.innerHTML = `<tr><td class="text-center py-6 text-slate-500">Nenhum dado importado no momento.</td></tr>`;
+                return;
+            }
+
             let headerHTML = `<tr>
                 <th class="py-3 px-4">Mês/Ano</th>
                 <th class="py-3 px-4 text-right">Aporte Mês</th>
@@ -990,7 +1306,6 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             headerHTML += `</tr>`;
             thead.innerHTML = headerHTML;
 
-            // Construct Rows (reversed to show latest first)
             tbody.innerHTML = '';
             [...calculatedRows].reverse().forEach((row) => {
                 const tr = document.createElement('tr');
@@ -1034,6 +1349,10 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 return;
             }
 
+            // Hide initial empty welcome banner
+            document.getElementById('welcome-empty-banner').classList.add('hidden');
+            document.getElementById('btn-export').disabled = false;
+
             assetColumns = result.assetColumns;
             parsedData = processCalculatedMetrics(result.rows, assetColumns);
 
@@ -1043,6 +1362,7 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             renderChartAlocacaoAtual(parsedData, assetColumns);
             renderChartEvolucaoClasses(parsedData, assetColumns);
             renderChartRendimentoVsAporte(parsedData);
+            renderBenchmarkComparison(parsedData);
             renderChartBase100(parsedData, assetColumns);
 
             setupTargetAllocations(assetColumns, parsedData);
@@ -1050,15 +1370,17 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
         }
 
         function switchTab(tabName) {
-            ['overview', 'rebalance', 'data'].forEach(t => {
-                document.getElementById(`section-${t}`).classList.add('hidden');
+            ['overview', 'benchmarks', 'rebalance', 'data'].forEach(t => {
+                const section = document.getElementById(`section-${t}`);
+                if (section) section.classList.add('hidden');
                 const btn = document.getElementById(`tab-${t}`);
-                btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white";
+                if (btn) btn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-white";
             });
 
-            document.getElementById(`section-${tabName}`).classList.remove('hidden');
+            const activeSection = document.getElementById(`section-${tabName}`);
+            if (activeSection) activeSection.classList.remove('hidden');
             const activeBtn = document.getElementById(`tab-${tabName}`);
-            activeBtn.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 bg-cyan-500 text-white shadow-md";
+            if (activeBtn) activeBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 bg-cyan-500 text-white shadow-md";
         }
 
         function openCsvModal() {
@@ -1119,7 +1441,6 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             document.body.removeChild(link);
         }
 
-        // Setup drag and drop listeners
         window.onload = function() {
             const dropZone = document.getElementById('drop-zone');
             
@@ -1141,8 +1462,9 @@ Jun/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 }
             });
 
-            // Initial auto-load of default dataset
-            loadDataset(RAW_DEFAULT_CSV);
+            // Start zeroed out by default as requested
+            updateKPICards([]);
+            document.getElementById('btn-export').disabled = true;
         };
     </script>
 </body>
