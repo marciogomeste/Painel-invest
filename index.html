@@ -101,8 +101,12 @@
                 </nav>
 
                 <div class="flex items-center gap-2">
-                    <button onclick="openCsvModal()" class="px-3.5 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-cyan-600/20">
-                        <i class="fa-solid fa-file-import"></i> Importar CSV
+                    <button onclick="openRecordModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/20">
+                        <i class="fa-solid fa-plus"></i> Novo Lançamento
+                    </button>
+
+                    <button onclick="openCsvModal()" class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-cyan-600/20">
+                        <i class="fa-solid fa-file-import"></i> CSV
                     </button>
 
                     <button onclick="exportDataCSV()" id="btn-export" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-medium rounded-xl transition flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -123,11 +127,14 @@
                 </div>
                 <h2 class="text-2xl font-extrabold text-white tracking-tight">Sua carteira está zerada</h2>
                 <p class="text-sm text-slate-300 leading-relaxed">
-                    Importe seu histórico de investimentos via arquivo CSV para visualizar o patrimônio, simular metas (como a jornada até R$ 1 Milhão), rebalancear ativos e comparar seu rendimento com o <strong class="text-cyan-400">CDI</strong>, <strong class="text-cyan-400">IBOVESPA</strong> e <strong class="text-cyan-400">S&P 500</strong>.
+                    Adicione lançamentos manuais ou importe um arquivo CSV para acompanhar o patrimônio, definir sua <strong class="text-cyan-400">meta financeira personalizada</strong>, simular rebalanceamento e comparar seus rendimentos com o <strong class="text-cyan-400">CDI</strong>, <strong class="text-cyan-400">IBOVESPA</strong> e <strong class="text-cyan-400">S&P 500</strong>.
                 </p>
                 <div class="pt-2 flex flex-wrap justify-center gap-3">
+                    <button onclick="openRecordModal()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+                        <i class="fa-solid fa-plus"></i> Inserir Lançamento Manual
+                    </button>
                     <button onclick="openCsvModal()" class="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
-                        <i class="fa-solid fa-upload"></i> Importar Meu CSV
+                        <i class="fa-solid fa-upload"></i> Importar CSV
                     </button>
                     <button onclick="loadDefaultCSV()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold text-xs rounded-xl transition flex items-center gap-2">
                         <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i> Carregar Exemplo de Teste
@@ -145,7 +152,7 @@
                 <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Patrimônio Total</p>
                 <p class="text-2xl font-bold text-white tracking-tight" id="kpi-total-patrimonio">R$ 0,00</p>
                 <div class="mt-2 flex items-center gap-1.5 text-xs" id="kpi-patrimonio-var">
-                    <span class="text-slate-500">Aguardando CSV</span>
+                    <span class="text-slate-500">Aguardando dados</span>
                 </div>
             </div>
 
@@ -173,12 +180,12 @@
                 </div>
             </div>
 
-            <!-- Meta R$ 1 Milhão Summary -->
+            <!-- Meta Personalizável Summary -->
             <div class="glass-card p-4 rounded-2xl relative overflow-hidden group border-cyan-500/20">
                 <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition text-cyan-400 text-6xl">
                     <i class="fa-solid fa-trophy"></i>
                 </div>
-                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1">Meta R$ 1 Milhão</p>
+                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider mb-1" id="kpi-goal-title">Falta para a Meta</p>
                 <p class="text-2xl font-bold text-cyan-400 tracking-tight" id="kpi-1m-falta">R$ 1.000.000,00</p>
                 <div class="mt-2 text-xs text-slate-300 font-medium" id="kpi-1m-progresso">
                     Falta 100,0% do objetivo
@@ -200,16 +207,38 @@
 
         <div id="section-overview" class="space-y-6">
 
-            <!-- Meta de 1 Milhão Banner Card -->
+            <!-- Meta de Patrimônio Personalizável Card -->
             <div class="glass-card p-6 rounded-2xl border border-cyan-500/30 bg-slate-900/80 relative overflow-hidden">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                    <div class="space-y-2 max-w-xl">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold">
-                            <i class="fa-solid fa-bullseye"></i> Jornada R$ 1.000.000,00
+                    <div class="space-y-3 max-w-xl">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold">
+                                <i class="fa-solid fa-bullseye"></i> Jornada de Patrimônio
+                            </span>
+                            <span class="text-xs text-slate-400">Personalize seu objetivo</span>
                         </div>
-                        <h2 class="text-xl font-extrabold text-white">Quanto falta para atingir 1 Milhão?</h2>
-                        <p class="text-xs text-slate-300 leading-relaxed" id="goal-description">
-                            Com base no seu patrimônio atual e no ritmo histórico de aportes e rentabilidade, projetamos o tempo aproximado para atingir seu primeiro milhão de reais.
+                        
+                        <!-- Editable Goal Input Container -->
+                        <div class="flex flex-wrap items-center gap-3">
+                            <h2 class="text-xl font-extrabold text-white">Meta:</h2>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-3 text-cyan-400 font-bold text-sm">R$</span>
+                                <input type="number" id="input-goal-value" value="1000000" step="50000" min="1000" oninput="handleGoalInputChange()" class="bg-slate-950 border border-cyan-500/50 rounded-xl pl-9 pr-3 py-1.5 text-lg font-extrabold text-cyan-400 w-48 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20">
+                            </div>
+                        </div>
+
+                        <!-- Goal Quick Presets -->
+                        <div class="flex flex-wrap items-center gap-2 pt-1">
+                            <span class="text-xs text-slate-400 font-medium">Atalhos:</span>
+                            <button onclick="setQuickGoal(250000)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition">250k</button>
+                            <button onclick="setQuickGoal(500000)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition">500k</button>
+                            <button onclick="setQuickGoal(1000000)" class="px-2.5 py-1 bg-cyan-950 text-cyan-400 text-xs font-bold rounded-lg border border-cyan-500/40 transition">1 Milhão</button>
+                            <button onclick="setQuickGoal(2000000)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition">2 Milhões</button>
+                            <button onclick="setQuickGoal(5000000)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition">5 Milhões</button>
+                        </div>
+
+                        <p class="text-xs text-slate-300 leading-relaxed pt-1" id="goal-description">
+                            Com base no seu patrimônio atual e no ritmo histórico de aportes e rentabilidade, projetamos o tempo aproximado para atingir seu objetivo.
                         </p>
                     </div>
 
@@ -219,23 +248,23 @@
                             <span class="text-cyan-400" id="goal-pct-text">0.0%</span>
                         </div>
                         <!-- Progress Bar -->
-                        <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                        <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-700">
                             <div id="goal-progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full rounded-full transition-all duration-700" style="width: 0%"></div>
                         </div>
                         <div class="flex justify-between text-[11px] text-slate-400">
                             <span id="goal-current-val">R$ 0,00</span>
-                            <span class="font-bold text-slate-200">R$ 1.000.000,00</span>
+                            <span class="font-bold text-slate-200" id="goal-target-display">R$ 1.000.000,00</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-5 border-t border-slate-800/80">
                     <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/50">
-                        <p class="text-xs text-slate-400 mb-1">Valor que Falta</p>
+                        <p class="text-xs text-slate-400 mb-1">Valor Restante</p>
                         <p class="text-lg font-bold text-rose-400" id="goal-remaining-val">R$ 1.000.000,00</p>
                     </div>
                     <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/50">
-                        <p class="text-xs text-slate-400 mb-1">Aporte Médio Mês / Rentab.</p>
+                        <p class="text-xs text-slate-400 mb-1">Aporte Média / Rentab. Mês</p>
                         <p class="text-lg font-bold text-emerald-400" id="goal-avg-metrics">R$ 0,00 / 0,00%</p>
                     </div>
                     <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/50">
@@ -436,10 +465,13 @@
                             <i class="fa-solid fa-table text-cyan-400"></i>
                             Histórico de Lançamentos & Rendimentos
                         </h2>
-                        <p class="text-xs text-slate-400">Tabela detalhada calculada automaticamente com rendimento e variações mensais.</p>
+                        <p class="text-xs text-slate-400">Gerencie seus dados mensais. Adicione, edite ou exclua lançamentos conforme necessário.</p>
                     </div>
                     
                     <div class="flex items-center gap-2">
+                        <button onclick="openRecordModal()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
+                            <i class="fa-solid fa-plus"></i> Inserir Lançamento
+                        </button>
                         <input type="text" id="table-search" oninput="filterDataTable()" placeholder="Buscar por mês..." class="bg-slate-800 border border-slate-700 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500">
                     </div>
                 </div>
@@ -459,6 +491,7 @@
 
     </main>
 
+    <!-- Modal for CSV Import -->
     <div id="csv-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="glass-card bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative">
             <button onclick="closeCsvModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
@@ -468,17 +501,15 @@
             <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
                 <i class="fa-solid fa-file-csv text-cyan-400"></i> Importar Arquivo CSV
             </h3>
-            <p class="text-xs text-slate-400 mb-4">Você pode fazer upload do seu arquivo ou colar o conteúdo CSV abaixo.</p>
+            <p class="text-xs text-slate-400 mb-4">Upload do seu arquivo CSV ou cole o conteúdo de texto abaixo.</p>
 
-            <!-- Drag and drop zone -->
             <div id="drop-zone" onclick="document.getElementById('file-input').click()" class="border-2 border-dashed border-slate-700 hover:border-cyan-500 rounded-xl p-6 text-center cursor-pointer transition bg-slate-800/40 hover:bg-slate-800/70 mb-4">
                 <i class="fa-solid fa-cloud-arrow-up text-3xl text-cyan-400 mb-2"></i>
                 <p class="text-sm font-medium text-slate-200">Clique para selecionar ou arraste o arquivo CSV aqui</p>
-                <p class="text-xs text-slate-500 mt-1">Detecta automaticamente vírgulas, pontos e separadores decimais</p>
+                <p class="text-xs text-slate-500 mt-1">Detecta automaticamente vírgulas e pontos decimais</p>
                 <input type="file" id="file-input" accept=".csv, .txt" onchange="handleFileUpload(event)" class="hidden">
             </div>
 
-            <!-- Raw text area -->
             <div class="mb-4">
                 <label for="csv-paste-area" class="block text-xs font-semibold text-slate-300 mb-1.5">Ou cole seu CSV abaixo:</label>
                 <textarea id="csv-paste-area" rows="5" placeholder="Mes_Ano,Acoes_Brasileiras,Fundo_Imobiliario,BDR,Renda_Fixa,Aporte_Mensal,Total..." class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"></textarea>
@@ -486,7 +517,7 @@
 
             <div class="flex justify-between items-center pt-2 border-t border-slate-800">
                 <button onclick="loadDefaultCSV()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition">
-                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400 mr-1"></i> Carregar Exemplo de Demonstração
+                    <i class="fa-solid fa-wand-magic-sparkles text-cyan-400 mr-1"></i> Carregar Exemplo Demonstrativo
                 </button>
                 <div class="flex gap-2">
                     <button onclick="closeCsvModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition">Cancelar</button>
@@ -496,8 +527,56 @@
         </div>
     </div>
 
+    <!-- Modal for Manual Record Insertion / Editing -->
+    <div id="record-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="glass-card bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeRecordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-1" id="record-modal-title">
+                <i class="fa-solid fa-calendar-plus text-emerald-400"></i> Novo Lançamento Mensal
+            </h3>
+            <p class="text-xs text-slate-400 mb-5">Preencha os dados do mês e os valores em cada classe de investimento.</p>
+
+            <form id="form-record" onsubmit="saveManualRecord(event)" class="space-y-4">
+                <input type="hidden" id="edit-record-index" value="-1">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="input-rec-mes" class="block text-xs font-semibold text-slate-300 mb-1">Mês / Ano <span class="text-rose-400">*</span></label>
+                        <input type="text" id="input-rec-mes" placeholder="Ex: Jul/26" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div>
+                        <label for="input-rec-aporte" class="block text-xs font-semibold text-slate-300 mb-1">Aporte do Mês (R$)</label>
+                        <input type="number" step="0.01" min="0" id="input-rec-aporte" placeholder="0.00" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-800">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold text-slate-200">Valores dos Ativos no Mês (R$)</span>
+                        <button type="button" onclick="addNewAssetClassPrompt()" class="text-[11px] text-cyan-400 hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-plus-circle"></i> + Classe de Ativo
+                        </button>
+                    </div>
+
+                    <div id="record-assets-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Dynamic Asset Inputs Generated in JS -->
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-4 border-t border-slate-800">
+                    <button type="button" onclick="closeRecordModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition shadow-lg shadow-emerald-600/30 flex items-center gap-1.5">
+                        <i class="fa-solid fa-floppy-disk"></i> Salvar Lançamento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Sample CSV dataset for testing demo mode
         const RAW_DEFAULT_CSV = `Mes_Ano,Acoes_Brasileiras,Fundo_Imobiliario,BDR,Carteira_Exterior,Renda_Fixa,Caixa,Cripto_Nubank,Cripto_Binance,Alternativos,Aporte_Mensal,Total
 Jan/25,55533.93,36525.05,7998.4,59478.54,7000.0,1000.0,3000.0,1000.0,3537.17,3000.0,175073.09
 Fev/25,59383.7,35734.71,7776.0,59509.83,7051.03,1600.0,6000.0,1100.0,3537.17,3000.0,181692.44
@@ -517,47 +596,44 @@ Mar/26,102102.4,56106.9,11647.84,96446.43,15882.68,2500.0,13199.53,1100.1,3537.1
 Abr/26,99683.44,57811.97,13632.72,93570.24,20065.47,1000.0,13843.81,1200.0,3537.17,4000.0,304344.82
 Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.17,3000.0,302816.6`;
 
-        // Historical Benchmark Monthly Variations for CDI, Ibovespa, S&P 500
-        // Real market historical monthly benchmark returns (in decimal)
+        const DEFAULT_ASSET_CLASSES = [
+            'Acoes_Brasileiras', 'Fundo_Imobiliario', 'BDR', 
+            'Carteira_Exterior', 'Renda_Fixa', 'Caixa', 
+            'Cripto_Nubank', 'Cripto_Binance', 'Alternativos'
+        ];
+
         const HISTORICAL_BENCHMARKS = [
-            { cdi: 0.0092, ibov: 0.0210, sp500: 0.0180 }, // Jan/25
-            { cdi: 0.0088, ibov: 0.0085, sp500: -0.0120 }, // Fev/25
-            { cdi: 0.0095, ibov: -0.0150, sp500: 0.0240 }, // Mar/25
-            { cdi: 0.0089, ibov: 0.0120, sp500: -0.0080 }, // Abr/25
-            { cdi: 0.0094, ibov: 0.0340, sp500: 0.0310 }, // Mai/25
-            { cdi: 0.0090, ibov: 0.0180, sp500: 0.0150 }, // Jun/25
-            { cdi: 0.0093, ibov: 0.0250, sp500: 0.0120 }, // Jul/25
-            { cdi: 0.0091, ibov: 0.0090, sp500: 0.0220 }, // Ago/25
-            { cdi: 0.0087, ibov: -0.0210, sp500: -0.0050 }, // Set/25
-            { cdi: 0.0095, ibov: 0.0110, sp500: 0.0190 }, // Out/25
-            { cdi: 0.0092, ibov: 0.0040, sp500: 0.0280 }, // Nov/25
-            { cdi: 0.0096, ibov: 0.0290, sp500: 0.0140 }, // Dez/25
-            { cdi: 0.0098, ibov: 0.0180, sp500: 0.0160 }, // Jan/26
-            { cdi: 0.0089, ibov: -0.0050, sp500: 0.0090 }, // Fev/26
-            { cdi: 0.0094, ibov: 0.0220, sp500: 0.0210 }, // Mar/26
-            { cdi: 0.0091, ibov: -0.0110, sp500: -0.0040 }, // Abr/26
-            { cdi: 0.0093, ibov: 0.0140, sp500: 0.0180 }, // Mai/26
+            { cdi: 0.0092, ibov: 0.0210, sp500: 0.0180 },
+            { cdi: 0.0088, ibov: 0.0085, sp500: -0.0120 },
+            { cdi: 0.0095, ibov: -0.0150, sp500: 0.0240 },
+            { cdi: 0.0089, ibov: 0.0120, sp500: -0.0080 },
+            { cdi: 0.0094, ibov: 0.0340, sp500: 0.0310 },
+            { cdi: 0.0090, ibov: 0.0180, sp500: 0.0150 },
+            { cdi: 0.0093, ibov: 0.0250, sp500: 0.0120 },
+            { cdi: 0.0091, ibov: 0.0090, sp500: 0.0220 },
+            { cdi: 0.0087, ibov: -0.0210, sp500: -0.0050 },
+            { cdi: 0.0095, ibov: 0.0110, sp500: 0.0190 },
+            { cdi: 0.0092, ibov: 0.0040, sp500: 0.0280 },
+            { cdi: 0.0096, ibov: 0.0290, sp500: 0.0140 },
+            { cdi: 0.0098, ibov: 0.0180, sp500: 0.0160 },
+            { cdi: 0.0089, ibov: -0.0050, sp500: 0.0090 },
+            { cdi: 0.0094, ibov: 0.0220, sp500: 0.0210 },
+            { cdi: 0.0091, ibov: -0.0110, sp500: -0.0040 },
+            { cdi: 0.0093, ibov: 0.0140, sp500: 0.0180 },
         ];
 
-        // Palette for Charts
         const COLOR_PALETTE = [
-            '#06b6d4', // Cyan
-            '#8b5cf6', // Purple
-            '#f59e0b', // Amber
-            '#10b981', // Emerald
-            '#ec4899', // Pink
-            '#3b82f6', // Blue
-            '#f43f5e', // Rose
-            '#84cc16', // Lime
-            '#6366f1', // Indigo
-            '#14b8a6'  // Teal
+            '#06b6d4', '#8b5cf6', '#f59e0b', '#10b981', '#ec4899', 
+            '#3b82f6', '#f43f5e', '#84cc16', '#6366f1', '#14b8a6'
         ];
 
-        // Application State
-        let parsedData = []; // Array of monthly row objects
-        let assetColumns = []; // Dynamic list of asset headers
-        let targetAllocations = {}; // Asset name -> target %
-        let chartInstances = {}; // Store Chart.js instances
+        // State variables
+        let parsedData = [];
+        let rawRecords = [];
+        let assetColumns = [...DEFAULT_ASSET_CLASSES];
+        let targetAllocations = {};
+        let targetGoal = 1000000;
+        let chartInstances = {};
 
         function parseCSVString(csvText) {
             if (!csvText || !csvText.trim()) return null;
@@ -565,7 +641,6 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             const lines = csvText.trim().split(/\r?\n/).filter(line => line.trim() !== '');
             if (lines.length < 2) return null;
 
-            // Detect delimiter (comma vs semicolon vs tab)
             const firstLine = lines[0];
             let delimiter = ',';
             if ((firstLine.match(/;/g) || []).length > (firstLine.match(/,/g) || []).length) {
@@ -574,9 +649,7 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 delimiter = '\t';
             }
 
-            const rawHeaders = firstLine.split(delimiter).map(h => h.trim().replace(/^["']|["']$/g, ''));
-            const headers = rawHeaders.map(h => h);
-
+            const headers = firstLine.split(delimiter).map(h => h.trim().replace(/^["']|["']$/g, ''));
             const monthCol = headers.find(h => /mes|date|data/i.test(h)) || headers[0];
             const aporteCol = headers.find(h => /aporte/i.test(h)) || 'Aporte_Mensal';
             const totalCol = headers.find(h => /total|patrimonio/i.test(h)) || 'Total';
@@ -611,7 +684,7 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
 
             return {
                 rows,
-                assetColumns: detectedAssets
+                assetColumns: detectedAssets.length > 0 ? detectedAssets : DEFAULT_ASSET_CLASSES
             };
         }
 
@@ -647,27 +720,32 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             let cumulativeAportes = 0;
             
             return rows.map((row, index) => {
+                // Ensure asset sum calculation is up to date
+                let assetSum = 0;
+                assets.forEach(a => {
+                    assetSum += row.assets[a] || 0;
+                });
+                const totalVal = row.Total > 0 ? row.Total : assetSum;
+
                 if (index === 0) {
-                    cumulativeAportes = row.Total;
+                    cumulativeAportes = totalVal;
                 } else {
                     cumulativeAportes += row.Aporte_Mensal;
                 }
 
-                const prevTotal = index > 0 ? rows[index - 1].Total : (row.Total - row.Aporte_Mensal);
+                const prevTotal = index > 0 ? (parsedData[index - 1] ? parsedData[index - 1].Total : rows[index - 1].Total) : (totalVal - row.Aporte_Mensal);
                 const aporteAtual = row.Aporte_Mensal;
                 
-                // Real monthly gain = Total_current - Total_prev - Aporte_current
-                const rendimentoR$ = index === 0 ? 0 : (row.Total - prevTotal - aporteAtual);
-                
-                // Monthly return % = Rendimento / (Total_prev + Aporte)
+                const rendimentoR$ = index === 0 ? 0 : (totalVal - prevTotal - aporteAtual);
                 const baseInvestida = prevTotal + aporteAtual;
                 const rentabilidadePct = (index > 0 && baseInvestida > 0) ? (rendimentoR$ / baseInvestida) * 100 : 0;
 
-                const lucroAcumuladoR$ = row.Total - cumulativeAportes;
+                const lucroAcumuladoR$ = totalVal - cumulativeAportes;
                 const lucroAcumuladoPct = cumulativeAportes > 0 ? (lucroAcumuladoR$ / cumulativeAportes) * 100 : 0;
 
                 return {
                     ...row,
+                    Total: totalVal,
                     cumulativeAportes,
                     rendimentoR$,
                     rentabilidadePct,
@@ -677,12 +755,27 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             });
         }
 
-        function updateGoalTracker(calculatedRows) {
-            const TARGET_GOAL = 1000000;
-            const currentTotal = calculatedRows.length > 0 ? calculatedRows[calculatedRows.length - 1].Total : 0;
-            const remaining = Math.max(0, TARGET_GOAL - currentTotal);
-            const progressPct = Math.min(100, (currentTotal / TARGET_GOAL) * 100);
+        function setQuickGoal(val) {
+            targetGoal = val;
+            document.getElementById('input-goal-value').value = val;
+            refreshDashboard();
+        }
 
+        function handleGoalInputChange() {
+            const val = parseFloat(document.getElementById('input-goal-value').value);
+            if (!isNaN(val) && val > 0) {
+                targetGoal = val;
+                refreshDashboard();
+            }
+        }
+
+        function updateGoalTracker(calculatedRows) {
+            const currentTotal = calculatedRows.length > 0 ? calculatedRows[calculatedRows.length - 1].Total : 0;
+            const remaining = Math.max(0, targetGoal - currentTotal);
+            const progressPct = Math.min(100, (currentTotal / targetGoal) * 100);
+
+            document.getElementById('goal-target-display').innerText = formatBRL(targetGoal);
+            document.getElementById('kpi-goal-title').innerText = `Falta para ${formatBRL(targetGoal)}`;
             document.getElementById('kpi-1m-falta').innerText = formatBRL(remaining);
             document.getElementById('kpi-1m-progresso').innerText = `Falta ${(100 - progressPct).toFixed(1).replace('.', ',')}% do objetivo`;
 
@@ -694,16 +787,14 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             if (calculatedRows.length === 0 || currentTotal === 0) {
                 document.getElementById('goal-avg-metrics').innerText = 'R$ 0,00 / 0,00%';
                 document.getElementById('goal-estimated-time').innerText = '-- meses';
-                document.getElementById('goal-description').innerText = 'Importe seus dados para ver a estimativa personalizada até atingir R$ 1 Milhão.';
+                document.getElementById('goal-description').innerText = 'Insira lançamentos ou ajuste sua meta para visualizar a estimativa personalizada de atingimento.';
                 return;
             }
 
-            // Calculate average monthly aporte
             const totalAportesCount = calculatedRows.length - 1;
             const sumAportes = calculatedRows.slice(1).reduce((acc, r) => acc + r.Aporte_Mensal, 0);
             const avgAporte = totalAportesCount > 0 ? sumAportes / totalAportesCount : calculatedRows[0].Aporte_Mensal || 1000;
 
-            // Calculate average monthly return rate
             const sumReturns = calculatedRows.slice(1).reduce((acc, r) => acc + r.rentabilidadePct, 0);
             const avgReturnPct = totalAportesCount > 0 ? sumReturns / totalAportesCount : 0.8;
             const avgReturnDecimal = avgReturnPct / 100;
@@ -712,17 +803,14 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
 
             if (remaining <= 0) {
                 document.getElementById('goal-estimated-time').innerText = '🎉 Meta Atingida!';
-                document.getElementById('goal-description').innerText = 'Parabéns! Você já conquistou seu primeiro milhão de reais!';
+                document.getElementById('goal-description').innerText = `Parabéns! Você alcançou o seu objetivo de ${formatBRL(targetGoal)}!`;
                 return;
             }
 
-            // Compound interest future value solver for n months:
-            // FV = PV * (1+r)^n + PMT * [((1+r)^n - 1) / r]
-            // We want to solve for n when FV = 1,000,000
             let monthsToGoal = 0;
             if (avgReturnDecimal > 0 || avgAporte > 0) {
                 let tempBalance = currentTotal;
-                while (tempBalance < TARGET_GOAL && monthsToGoal < 1200) { // cap at 100 years max loop
+                while (tempBalance < targetGoal && monthsToGoal < 1200) {
                     tempBalance = (tempBalance + avgAporte) * (1 + Math.max(0, avgReturnDecimal));
                     monthsToGoal++;
                 }
@@ -743,14 +831,14 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     timeStr = `${months} m${months > 1 ? 'eses' : 'ês'}`;
                 }
                 document.getElementById('goal-estimated-time').innerText = `${timeStr} (${monthsToGoal} meses)`;
-                document.getElementById('goal-description').innerText = `Projeção considerando aporte médio de ${formatBRL(avgAporte)}/mês e rendimento de ${avgReturnPct.toFixed(2).replace('.', ',')}% ao mês.`;
+                document.getElementById('goal-description').innerText = `Projeção calculada para atingir ${formatBRL(targetGoal)} considerando aporte médio de ${formatBRL(avgAporte)}/mês e rentabilidade de ${avgReturnPct.toFixed(2).replace('.', ',')}%/mês.`;
             }
         }
 
         function updateKPICards(calculatedRows) {
             if (!calculatedRows || calculatedRows.length === 0) {
                 document.getElementById('kpi-total-patrimonio').innerText = 'R$ 0,00';
-                document.getElementById('kpi-patrimonio-var').innerHTML = '<span class="text-slate-500">Aguardando CSV</span>';
+                document.getElementById('kpi-patrimonio-var').innerHTML = '<span class="text-slate-500">Aguardando dados</span>';
                 document.getElementById('kpi-total-aportado').innerText = 'R$ 0,00';
                 document.getElementById('kpi-ultimo-aporte').innerText = 'Último aporte: R$ 0,00';
                 document.getElementById('kpi-lucro-total').innerText = 'R$ 0,00';
@@ -763,7 +851,6 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             const currentMonth = calculatedRows[calculatedRows.length - 1];
             const prevMonth = calculatedRows.length > 1 ? calculatedRows[calculatedRows.length - 2] : null;
 
-            // 1. Patrimônio Total
             document.getElementById('kpi-total-patrimonio').innerText = formatBRL(currentMonth.Total);
             const varPatrimonio = prevMonth ? currentMonth.Total - prevMonth.Total : 0;
             const varPatrimonioPct = prevMonth ? ((currentMonth.Total - prevMonth.Total) / prevMonth.Total) * 100 : 0;
@@ -773,18 +860,15 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                    </span> <span class="text-slate-500">vs mês ant.</span>`
                 : `<span class="text-slate-400">Primeiro mês registrado</span>`;
 
-            // 2. Total Aportado
             document.getElementById('kpi-total-aportado').innerText = formatBRL(currentMonth.cumulativeAportes);
             document.getElementById('kpi-ultimo-aporte').innerText = `Último aporte: ${formatBRL(currentMonth.Aporte_Mensal)}`;
 
-            // 3. Lucro Acumulado
             document.getElementById('kpi-lucro-total').innerText = formatBRL(currentMonth.lucroAcumuladoR$);
             document.getElementById('kpi-lucro-pct').innerHTML = `
                 <span class="${currentMonth.lucroAcumuladoR$ >= 0 ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'} px-2 py-0.5 rounded-md border ${currentMonth.lucroAcumuladoR$ >= 0 ? 'border-emerald-500/20' : 'border-rose-500/20'}">
                     ${formatPercent(currentMonth.lucroAcumuladoPct)} no acumulado
                 </span>`;
 
-            // 4. Rentabilidade Média Mensal
             const totalMonths = calculatedRows.length - 1;
             const sumReturns = calculatedRows.slice(1).reduce((acc, r) => acc + r.rentabilidadePct, 0);
             const avgReturn = totalMonths > 0 ? sumReturns / totalMonths : 0;
@@ -792,7 +876,6 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             rentabEl.innerText = formatPercent(avgReturn, false);
             rentabEl.className = `text-2xl font-bold tracking-tight ${avgReturn >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
 
-            // 5. Update 1 Million Goal
             updateGoalTracker(calculatedRows);
         }
 
@@ -822,7 +905,6 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                             fill: true,
                             tension: 0.3,
                             pointRadius: 4,
-                            pointHoverRadius: 6,
                             pointBackgroundColor: '#06b6d4'
                         },
                         {
@@ -843,21 +925,11 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 12 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}`
-                            }
-                        }
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}` } }
                     },
                     scales: {
                         x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                        y: { 
-                            grid: { color: 'rgba(255,255,255,0.05)' }, 
-                            ticks: { 
-                                color: '#94a3b8',
-                                callback: (val) => 'R$ ' + (val / 1000).toFixed(0) + 'k'
-                            } 
-                        }
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', callback: (val) => 'R$ ' + (val / 1000).toFixed(0) + 'k' } }
                     }
                 }
             });
@@ -887,10 +959,7 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { 
-                            position: 'bottom',
-                            labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 }, boxWidth: 12 } 
-                        },
+                        legend: { position: 'bottom', labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
                         tooltip: {
                             callbacks: {
                                 label: (ctx) => {
@@ -933,22 +1002,11 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: { position: 'top', labels: { color: '#94a3b8', font: { family: 'Inter', size: 10 }, boxWidth: 10 } },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}`
-                            }
-                        }
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}` } }
                     },
                     scales: {
                         x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                        y: { 
-                            stacked: true,
-                            grid: { color: 'rgba(255,255,255,0.05)' }, 
-                            ticks: { 
-                                color: '#94a3b8',
-                                callback: (val) => 'R$ ' + (val / 1000).toFixed(0) + 'k'
-                            } 
-                        }
+                        y: { stacked: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', callback: (val) => 'R$ ' + (val / 1000).toFixed(0) + 'k' } }
                     }
                 }
             });
@@ -987,21 +1045,11 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}`
-                            }
-                        }
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatBRL(ctx.raw)}` } }
                     },
                     scales: {
                         x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                        y: { 
-                            grid: { color: 'rgba(255,255,255,0.05)' }, 
-                            ticks: { 
-                                color: '#94a3b8',
-                                callback: (val) => 'R$ ' + (val / 1000).toFixed(1) + 'k'
-                            } 
-                        }
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', callback: (val) => 'R$ ' + (val / 1000).toFixed(1) + 'k' } }
                     }
                 }
             });
@@ -1013,7 +1061,6 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             const labels = calculatedRows.map(r => r.Mes_Ano);
             document.getElementById('benchmark-period-label').innerText = `${labels[0]} até ${labels[labels.length - 1]}`;
 
-            // Build Base 100 Curves for Carteira vs CDI vs IBOVESPA vs S&P 500
             let portfolioBase100 = [100];
             let cdiBase100 = [100];
             let ibovBase100 = [100];
@@ -1031,7 +1078,6 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 sp500Base100.push(sp500Base100[i - 1] * (1 + bm.sp500));
             }
 
-            // Calculate Accumulated Percentages
             const carteiraTotalPct = (portfolioBase100[portfolioBase100.length - 1] - 100);
             const cdiTotalPct = (cdiBase100[cdiBase100.length - 1] - 100);
             const ibovTotalPct = (ibovBase100[ibovBase100.length - 1] - 100);
@@ -1042,7 +1088,6 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             document.getElementById('bm-ibov-pct').innerText = formatPercent(ibovTotalPct);
             document.getElementById('bm-sp500-pct').innerText = formatPercent(sp500TotalPct);
 
-            // Render Chart
             const ctx = document.getElementById('chartBenchmarkComparison').getContext('2d');
             if (chartInstances.benchmarkComparison) chartInstances.benchmarkComparison.destroy();
 
@@ -1051,47 +1096,10 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 data: {
                     labels,
                     datasets: [
-                        {
-                            label: 'Sua Carteira',
-                            data: portfolioBase100.map(v => Number(v.toFixed(2))),
-                            borderColor: '#06b6d4',
-                            backgroundColor: '#06b6d4',
-                            borderWidth: 3,
-                            fill: false,
-                            tension: 0.2,
-                            pointRadius: 3
-                        },
-                        {
-                            label: 'CDI (Renda Fixa)',
-                            data: cdiBase100.map(v => Number(v.toFixed(2))),
-                            borderColor: '#10b981',
-                            backgroundColor: '#10b981',
-                            borderWidth: 2,
-                            borderDash: [4, 4],
-                            fill: false,
-                            tension: 0.1,
-                            pointRadius: 2
-                        },
-                        {
-                            label: 'IBOVESPA',
-                            data: ibovBase100.map(v => Number(v.toFixed(2))),
-                            borderColor: '#f59e0b',
-                            backgroundColor: '#f59e0b',
-                            borderWidth: 2,
-                            fill: false,
-                            tension: 0.2,
-                            pointRadius: 2
-                        },
-                        {
-                            label: 'S&P 500',
-                            data: sp500Base100.map(v => Number(v.toFixed(2))),
-                            borderColor: '#a855f7',
-                            backgroundColor: '#a855f7',
-                            borderWidth: 2,
-                            fill: false,
-                            tension: 0.2,
-                            pointRadius: 2
-                        }
+                        { label: 'Sua Carteira', data: portfolioBase100.map(v => Number(v.toFixed(2))), borderColor: '#06b6d4', backgroundColor: '#06b6d4', borderWidth: 3, fill: false, tension: 0.2, pointRadius: 3 },
+                        { label: 'CDI (Renda Fixa)', data: cdiBase100.map(v => Number(v.toFixed(2))), borderColor: '#10b981', backgroundColor: '#10b981', borderWidth: 2, borderDash: [4, 4], fill: false, tension: 0.1, pointRadius: 2 },
+                        { label: 'IBOVESPA', data: ibovBase100.map(v => Number(v.toFixed(2))), borderColor: '#f59e0b', backgroundColor: '#f59e0b', borderWidth: 2, fill: false, tension: 0.2, pointRadius: 2 },
+                        { label: 'S&P 500', data: sp500Base100.map(v => Number(v.toFixed(2))), borderColor: '#a855f7', backgroundColor: '#a855f7', borderWidth: 2, fill: false, tension: 0.2, pointRadius: 2 }
                     ]
                 },
                 options: {
@@ -1099,18 +1107,11 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { position: 'top', labels: { color: '#94a3b8', font: { family: 'Inter', size: 12 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} pts (Base 100)`
-                            }
-                        }
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} pts (Base 100)` } }
                     },
                     scales: {
                         x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                        y: { 
-                            grid: { color: 'rgba(255,255,255,0.05)' }, 
-                            ticks: { color: '#94a3b8' } 
-                        }
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
                     }
                 }
             });
@@ -1152,21 +1153,142 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { position: 'bottom', labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} (Base 100)`
-                            }
-                        }
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} (Base 100)` } }
                     },
                     scales: {
                         x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                        y: { 
-                            grid: { color: 'rgba(255,255,255,0.05)' }, 
-                            ticks: { color: '#94a3b8' } 
-                        }
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
                     }
                 }
             });
+        }
+
+        function openRecordModal(editIndex = -1) {
+            document.getElementById('edit-record-index').value = editIndex;
+            const container = document.getElementById('record-assets-container');
+            container.innerHTML = '';
+
+            const modalTitle = document.getElementById('record-modal-title');
+
+            if (editIndex >= 0 && rawRecords[editIndex]) {
+                const rec = rawRecords[editIndex];
+                modalTitle.innerHTML = `<i class="fa-solid fa-pen-to-square text-cyan-400"></i> Editar Lançamento (${rec.Mes_Ano})`;
+                document.getElementById('input-rec-mes').value = rec.Mes_Ano;
+                document.getElementById('input-rec-aporte').value = rec.Aporte_Mensal || 0;
+
+                assetColumns.forEach(asset => {
+                    const val = rec.assets[asset] !== undefined ? rec.assets[asset] : 0;
+                    container.innerHTML += createAssetInputHTML(asset, val);
+                });
+            } else {
+                modalTitle.innerHTML = `<i class="fa-solid fa-calendar-plus text-emerald-400"></i> Novo Lançamento Mensal`;
+                
+                // Suggest next month
+                let nextMonthName = 'Jul/26';
+                if (rawRecords.length > 0) {
+                    const lastMes = rawRecords[rawRecords.length - 1].Mes_Ano;
+                    nextMonthName = suggestNextMonth(lastMes);
+                }
+                document.getElementById('input-rec-mes').value = nextMonthName;
+                document.getElementById('input-rec-aporte').value = 2000;
+
+                const lastAssets = rawRecords.length > 0 ? rawRecords[rawRecords.length - 1].assets : {};
+                assetColumns.forEach(asset => {
+                    const lastVal = lastAssets[asset] || 0;
+                    container.innerHTML += createAssetInputHTML(asset, lastVal);
+                });
+            }
+
+            document.getElementById('record-modal').classList.remove('hidden');
+        }
+
+        function createAssetInputHTML(asset, val) {
+            return `
+                <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                    <label class="block text-[11px] font-medium text-slate-400 mb-1 truncate" title="${formatAssetName(asset)}">${formatAssetName(asset)}</label>
+                    <input type="number" step="0.01" min="0" data-asset-key="${asset}" value="${val}" class="asset-input-field w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-cyan-500 font-semibold">
+                </div>
+            `;
+        }
+
+        function suggestNextMonth(lastMesStr) {
+            if (!lastMesStr) return 'Jan/25';
+            const parts = lastMesStr.split('/');
+            if (parts.length < 2) return lastMesStr + ' +1';
+
+            const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+            let idx = months.findIndex(m => m.toLowerCase() === parts[0].toLowerCase());
+            let year = parseInt(parts[1]);
+
+            if (isNaN(year)) year = 25;
+            if (idx === -1) idx = 0;
+
+            idx++;
+            if (idx >= 12) {
+                idx = 0;
+                year++;
+            }
+
+            const yrStr = year < 10 ? '0' + year : year.toString().slice(-2);
+            return `${months[idx]}/${yrStr}`;
+        }
+
+        function closeRecordModal() {
+            document.getElementById('record-modal').classList.add('hidden');
+        }
+
+        function addNewAssetClassPrompt() {
+            const name = prompt("Digite o nome da nova classe de investimento (ex: Tesouro Selic, Ouro):");
+            if (!name || !name.trim()) return;
+
+            const formattedKey = name.trim().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '');
+            if (!assetColumns.includes(formattedKey)) {
+                assetColumns.push(formattedKey);
+                const container = document.getElementById('record-assets-container');
+                container.innerHTML += createAssetInputHTML(formattedKey, 0);
+            }
+        }
+
+        function saveManualRecord(e) {
+            e.preventDefault();
+            const editIndex = parseInt(document.getElementById('edit-record-index').value);
+            const mes = document.getElementById('input-rec-mes').value.trim();
+            const aporte = parseFloat(document.getElementById('input-rec-aporte').value) || 0;
+
+            if (!mes) return;
+
+            const assetsObj = {};
+            let totalSum = 0;
+
+            document.querySelectorAll('.asset-input-field').forEach(input => {
+                const key = input.getAttribute('data-asset-key');
+                const val = parseFloat(input.value) || 0;
+                assetsObj[key] = val;
+                totalSum += val;
+            });
+
+            const recordObj = {
+                Mes_Ano: mes,
+                Aporte_Mensal: aporte,
+                Total: totalSum,
+                assets: assetsObj
+            };
+
+            if (editIndex >= 0 && editIndex < rawRecords.length) {
+                rawRecords[editIndex] = recordObj;
+            } else {
+                rawRecords.push(recordObj);
+            }
+
+            refreshDashboard();
+            closeRecordModal();
+        }
+
+        function deleteRecord(index) {
+            if (index >= 0 && index < rawRecords.length) {
+                rawRecords.splice(index, 1);
+                refreshDashboard();
+            }
         }
 
         function setupTargetAllocations(assets, calculatedRows) {
@@ -1186,7 +1308,7 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
 
         function calculateRebalance() {
             if (!parsedData || parsedData.length === 0) {
-                document.getElementById('rebalance-table-body').innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-500">Importe seu CSV para simular o rebalanceamento.</td></tr>`;
+                document.getElementById('rebalance-table-body').innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-500">Insira ou importe dados para simular o rebalanceamento.</td></tr>`;
                 return;
             }
 
@@ -1254,7 +1376,7 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             } else {
                 totalTargetEl.className = 'text-rose-400 text-sm font-bold';
                 warningEl.className = 'text-amber-400 font-medium';
-                warningEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Atenção: A soma das metas deve ser 100% (Atual: ${totalTargetPct.toFixed(1)}%)`;
+                warningEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Soma deve ser 100% (Atual: ${totalTargetPct.toFixed(1)}%)`;
             }
         }
 
@@ -1289,11 +1411,12 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
 
             if (!calculatedRows || calculatedRows.length === 0) {
                 thead.innerHTML = '';
-                tbody.innerHTML = `<tr><td class="text-center py-6 text-slate-500">Nenhum dado importado no momento.</td></tr>`;
+                tbody.innerHTML = `<tr><td class="text-center py-6 text-slate-500">Nenhum dado cadastrado. Clique em "Novo Lançamento" ou carregue o CSV.</td></tr>`;
                 return;
             }
 
             let headerHTML = `<tr>
+                <th class="py-3 px-4 text-center">Ações</th>
                 <th class="py-3 px-4">Mês/Ano</th>
                 <th class="py-3 px-4 text-right">Aporte Mês</th>
                 <th class="py-3 px-4 text-right">Patrimônio Total</th>
@@ -1307,11 +1430,22 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             thead.innerHTML = headerHTML;
 
             tbody.innerHTML = '';
-            [...calculatedRows].reverse().forEach((row) => {
+            // Render reverse order (newest first) but map real indices
+            calculatedRows.map((row, realIndex) => ({ row, realIndex })).reverse().forEach(({ row, realIndex }) => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-800/50 transition border-b border-slate-800/60";
 
                 let rowHTML = `
+                    <td class="py-3 px-4 text-center">
+                        <div class="flex justify-center items-center gap-1.5">
+                            <button onclick="openRecordModal(${realIndex})" title="Editar Lançamento" class="p-1.5 text-cyan-400 hover:text-cyan-300 hover:bg-slate-800 rounded-lg transition">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteRecord(${realIndex})" title="Excluir Lançamento" class="p-1.5 text-rose-400 hover:text-rose-300 hover:bg-slate-800 rounded-lg transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </td>
                     <td class="py-3 px-4 font-bold text-white">${row.Mes_Ano}</td>
                     <td class="py-3 px-4 text-right font-medium text-slate-300">${formatBRL(row.Aporte_Mensal)}</td>
                     <td class="py-3 px-4 text-right font-bold text-cyan-400">${formatBRL(row.Total)}</td>
@@ -1342,21 +1476,17 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
             });
         }
 
-        function loadDataset(csvContent) {
-            const result = parseCSVString(csvContent);
-            if (!result || result.rows.length === 0) {
-                alert("Erro ao processar o CSV. Por favor, verifique a formatação do arquivo.");
-                return;
+        function refreshDashboard() {
+            if (rawRecords.length > 0) {
+                document.getElementById('welcome-empty-banner').classList.add('hidden');
+                document.getElementById('btn-export').disabled = false;
+            } else {
+                document.getElementById('welcome-empty-banner').classList.remove('hidden');
+                document.getElementById('btn-export').disabled = true;
             }
 
-            // Hide initial empty welcome banner
-            document.getElementById('welcome-empty-banner').classList.add('hidden');
-            document.getElementById('btn-export').disabled = false;
+            parsedData = processCalculatedMetrics(rawRecords, assetColumns);
 
-            assetColumns = result.assetColumns;
-            parsedData = processCalculatedMetrics(result.rows, assetColumns);
-
-            // Update UI elements
             updateKPICards(parsedData);
             renderChartEvolucaoPatrimonial(parsedData);
             renderChartAlocacaoAtual(parsedData, assetColumns);
@@ -1367,6 +1497,17 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
 
             setupTargetAllocations(assetColumns, parsedData);
             renderDataTable(parsedData, assetColumns);
+        }
+
+        function loadDataset(csvContent) {
+            const result = parseCSVString(csvContent);
+            if (!result || result.rows.length === 0) {
+                return;
+            }
+
+            assetColumns = result.assetColumns;
+            rawRecords = result.rows;
+            refreshDashboard();
         }
 
         function switchTab(tabName) {
@@ -1399,10 +1540,7 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
 
         function processPastedCSV() {
             const rawText = document.getElementById('csv-paste-area').value;
-            if (!rawText.trim()) {
-                alert("Por favor, cole o conteúdo do CSV no campo de texto.");
-                return;
-            }
+            if (!rawText.trim()) return;
             loadDataset(rawText);
             closeCsvModal();
         }
@@ -1462,9 +1600,7 @@ Mai/26,94642.2,55019.37,13550.16,100498.42,18000.1,4000.0,12069.18,1500.0,3537.1
                 }
             });
 
-            // Start zeroed out by default as requested
-            updateKPICards([]);
-            document.getElementById('btn-export').disabled = true;
+            refreshDashboard();
         };
     </script>
 </body>
